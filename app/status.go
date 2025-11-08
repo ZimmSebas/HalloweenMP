@@ -13,7 +13,15 @@ type Mediator interface {
 }
 
 type Context struct {
-	Filesys *files.FileSystem
-	Scene   *scene.SceneManager
-	User    *user.User
+	FileSystem   *files.FileSystem
+	SceneManager *scene.SceneManager
+	User         *user.User
+}
+
+func NewContext(u *user.User) {
+	return &Context{
+		FileSystem:   files.NewFileSystem(),
+		SceneManager: scene.NewSceneManager(),
+		User:         u,
+	}
 }

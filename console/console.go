@@ -12,6 +12,18 @@ type Console struct {
 	commands map[string]Command
 }
 
+func NewConsole() *Console {
+	return &Console{make(map[string]Command)}
+}
+
+func (c *Console) Register(cmd Command) {
+	c.commands[cmd.Name()] = cmd
+}
+
+func (c *Console) RegisterDefaultCommands() {
+	c.Register(&ClearCommand{})
+}
+
 func (c *Console) Execute(raw_command string, ctx *app.Context) (string, bool) {
 	command_array := strings.Fields(raw_command)
 
