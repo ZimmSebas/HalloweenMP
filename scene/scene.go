@@ -30,7 +30,7 @@ func (s *SceneManager) ChangeScene() (int, bool) {
 		fmt.Println("Hubo un error con el final de la escena ", s.current)
 	}
 
-	ok = s.scenes[s.current].Begin()
+	ok = s.StartScene()
 
 	if !ok {
 		fmt.Println("Hubo un error con el inicio de la escena ", s.current)
@@ -41,6 +41,10 @@ func (s *SceneManager) ChangeScene() (int, bool) {
 
 func (s *SceneManager) GetScene() int {
 	return s.current
+}
+
+func (s *SceneManager) StartScene() bool {
+	return s.scenes[s.current].Begin()
 }
 
 type Scene interface {

@@ -6,6 +6,10 @@ import (
 	"halloween/user"
 )
 
+func start(ctx *app.Context) {
+	ctx.SceneManager.StartScene()
+}
+
 func main() {
 
 	u := user.Guest()
@@ -16,4 +20,8 @@ func main() {
 	c.RegisterDefaultCommands()
 
 	ctx.FileSystem.ListFiles()
+
+	start(ctx)
+	c.Init(ctx)
+
 }
