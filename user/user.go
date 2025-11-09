@@ -1,5 +1,38 @@
 package user
 
+type User struct {
+	Username    string
+	Password    string
+	Permissions PermStrategy
+}
+
+type UserSystem struct {
+	users map[string]User
+}
+
+func NewUserSystem() *UserSystem {
+	return &UserSystem{
+		users: map[string]User{
+			"guest":      {Username: "guest", Password: "", Permissions: &GuestPerm{}},
+			"cientifica": {Username: "ines.vatela", Password: "", Permissions: &GuestPerm{}},
+			"medium":     {Username: "medium", Password: "", Permissions: &GuestPerm{}},
+			"secretario": {Username: "secretario", Password: "", Permissions: &GuestPerm{}},
+			"cto":        {Username: "cto", Password: "", Permissions: &GuestPerm{}},
+			"jefeseg":    {Username: "jefeseg", Password: "", Permissions: &GuestPerm{}},
+			"zordon":     {Username: "manuel.zordon", Password: "", Permissions: &GuestPerm{}},
+			"gandalf":    {Username: "gandalf", Password: "aguantesam", Permissions: &AdminPerm{}},
+		},
+	}
+}
+
+func Guest() *User {
+	return &User{
+		Username:    "guest",
+		Password:    "",
+		Permissions: &GuestPerm{},
+	}
+}
+
 type PermStrategy interface {
 	CanAccessFile(filename string) bool
 	CanSeeCommand(command_name string) bool
@@ -29,16 +62,4 @@ func (a *AdminPerm) CanAccessFile(name string) bool {
 
 func (a *AdminPerm) CanSeeCommand(name string) bool {
 	return true
-}
-
-type User struct {
-	Name        string
-	Permissions PermStrategy
-}
-
-func Guest() *User {
-	return &User{
-		Name:        "guest",
-		Permissions: &GuestPerm{},
-	}
 }

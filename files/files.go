@@ -5,7 +5,12 @@ type FileSystem struct {
 }
 
 func NewFileSystem() *FileSystem {
-	return &FileSystem{}
+	return &FileSystem{
+		files: map[string]string{
+			"readme.txt":           "Test file",
+			"ReporteVatela-v2.pdf": "Reporte de Ines Vatela",
+		},
+	}
 }
 
 func (fs *FileSystem) ListFiles() string {
@@ -15,5 +20,6 @@ func (fs *FileSystem) ListFiles() string {
 
 func (fs *FileSystem) ReadFile(name string) (string, bool) {
 	content, ok := fs.files[name]
+
 	return content, ok
 }
