@@ -18,7 +18,7 @@ type Context struct {
 	User         *user.User
 }
 
-func NewContext(u *user.User) {
+func NewContext(u *user.User) *Context {
 	return &Context{
 		FileSystem:   files.NewFileSystem(),
 		SceneManager: scene.NewSceneManager(),

@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"halloween/app"
+	"halloween/ascii"
 	"os"
 	"strings"
 )
@@ -41,12 +42,28 @@ func (c *Console) Execute(raw_command string, ctx *app.Context) (string, bool) {
 
 }
 
-func (c *Console) Prompt(ctx *app.Context) {
+func (c *Console) Init(ctx *app.Context) {
+	c.Execute("clear", ctx)
+
+	fmt.Println("Modo de recuperación activo.")
+	fmt.Println("")
+	ascii.Oracle()
+	fmt.Println("")
+	fmt.Println("Puede escribir *ayuda* para ver comandos posibles, o escribir un comando para ejecutarlo")
+
+	c.PromptLoop(ctx)
+
+}
+
+func (c *Console) PromptLoop(ctx *app.Context) {
 	reader := bufio.NewReader(os.Stdin)
 
 	fmt.Printf("> ")
 
 	raw_input, _ := reader.ReadString('\n')
 
-	c.Execute(raw_input, ctx)
+	_, _ = c.Execute(raw_input, ctx)
+
+	c.PromptLoop(ctx)
+
 }
