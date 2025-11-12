@@ -25,6 +25,18 @@ func NewUserSystem() *UserSystem {
 	}
 }
 
+func (us *UserSystem) CanAccess(username string, password string) (User, bool) {
+
+	user, ok := us.users[username]
+
+	if ok {
+		return user, user.Password == password
+	}
+
+	guest_user := Guest()
+	return *guest_user, false
+}
+
 func Guest() *User {
 	return &User{
 		Username:    "guest",

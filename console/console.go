@@ -23,6 +23,9 @@ func (c *Console) Register(cmd Command) {
 
 func (c *Console) RegisterDefaultCommands() {
 	c.Register(&ClearCommand{})
+	c.Register(&HelpCommand{})
+	c.Register(&StatusCommand{})
+	c.Register(&LoginCommand{})
 }
 
 func (c *Console) Execute(raw_command string, ctx *app.Context) (string, bool) {
