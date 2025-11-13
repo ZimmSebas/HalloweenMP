@@ -4,30 +4,31 @@ type User struct {
 	Username    string
 	Password    string
 	Permissions PermStrategy
+	Description string
 }
 
 type UserSystem struct {
-	users map[string]User
+	Users map[string]User
 }
 
 func NewUserSystem() *UserSystem {
 	return &UserSystem{
-		users: map[string]User{
-			"guest":      {Username: "guest", Password: "", Permissions: &GuestPerm{}},
-			"cientifica": {Username: "ines.vatela", Password: "", Permissions: &GuestPerm{}},
-			"medium":     {Username: "medium", Password: "", Permissions: &GuestPerm{}},
-			"secretario": {Username: "secretario", Password: "", Permissions: &GuestPerm{}},
-			"cto":        {Username: "cto", Password: "", Permissions: &GuestPerm{}},
-			"jefeseg":    {Username: "jefeseg", Password: "", Permissions: &GuestPerm{}},
-			"zordon":     {Username: "manuel.zordon", Password: "", Permissions: &GuestPerm{}},
-			"gandalf":    {Username: "gandalf", Password: "aguantesam", Permissions: &AdminPerm{}},
+		Users: map[string]User{
+			"guest":      {Username: "guest", Password: "", Permissions: &GuestPerm{}, Description: ""},
+			"cientifica": {Username: "ines.vatela", Password: "", Permissions: &GuestPerm{}, Description: ""},
+			"medium":     {Username: "medium", Password: "", Permissions: &GuestPerm{}, Description: ""},
+			"secretario": {Username: "secretario", Password: "", Permissions: &GuestPerm{}, Description: ""},
+			"cto":        {Username: "cto", Password: "", Permissions: &GuestPerm{}, Description: ""},
+			"jefeseg":    {Username: "jefeseg", Password: "", Permissions: &GuestPerm{}, Description: ""},
+			"zordon":     {Username: "manuel.zordon", Password: "", Permissions: &GuestPerm{}, Description: ""},
+			"gandalf":    {Username: "gandalf", Password: "aguantesam", Permissions: &AdminPerm{}, Description: ""},
 		},
 	}
 }
 
-func (us *UserSystem) CanAccess(username string, password string) (User, bool) {
+func (us *UserSystem) LoginAccess(username string, password string) (User, bool) {
 
-	user, ok := us.users[username]
+	user, ok := us.Users[username]
 
 	if ok {
 		return user, user.Password == password
@@ -35,6 +36,17 @@ func (us *UserSystem) CanAccess(username string, password string) (User, bool) {
 
 	guest_user := Guest()
 	return *guest_user, false
+}
+
+func (us *UserSystem) GetDescription(username string) (string, bool) {
+
+	user, ok := us.Users[username]
+
+	if ok {
+		return user.Description, true
+	}
+
+	return "Usuario no encontrado", false
 }
 
 func Guest() *User {

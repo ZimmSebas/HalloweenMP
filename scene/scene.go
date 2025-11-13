@@ -84,6 +84,8 @@ func (s *SceneZero) Begin() bool {
 	return true
 }
 
+// Critical systems are down. Please evacuate the building.
+
 func (s *SceneZero) Finish() bool {
 	return true
 }

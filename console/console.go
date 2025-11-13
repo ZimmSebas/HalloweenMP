@@ -22,10 +22,15 @@ func (c *Console) Register(cmd Command) {
 }
 
 func (c *Console) RegisterDefaultCommands() {
-	c.Register(&ClearCommand{})
 	c.Register(&HelpCommand{})
-	c.Register(&StatusCommand{})
+	c.Register(&ClearCommand{})
 	c.Register(&LoginCommand{})
+	c.Register(&StatusCommand{})
+	c.Register(&LogoutCommand{})
+	c.Register(&ListPersonCommand{})
+	c.Register(&CheckCommand{})
+	c.Register(&ListFilesCommand{})
+	c.Register(&OpenCommand{})
 }
 
 func (c *Console) Execute(raw_command string, ctx *app.Context) (string, bool) {
@@ -35,8 +40,13 @@ func (c *Console) Execute(raw_command string, ctx *app.Context) (string, bool) {
 	var ok_command bool
 
 	cmdName := command_array[0]
+
 	if cmd, ok := c.commands[cmdName]; ok {
-		result, ok_command = cmd.Execute(ctx, command_array[1:])
+		if len(command_array)-1 != cmd.Length() {
+			result, ok_command = "Error de comando, se esperaban más argumentos. Ver *ayuda* para mas información.", false
+		} else {
+			result, ok_command = cmd.Execute(ctx, command_array[1:])
+		}
 	} else {
 		result, ok_command = "Comando no reconocido", false
 	}
@@ -65,7 +75,11 @@ func (c *Console) PromptLoop(ctx *app.Context) {
 
 	raw_input, _ := reader.ReadString('\n')
 
-	_, _ = c.Execute(raw_input, ctx)
+	result, ok_command := c.Execute(raw_input, ctx)
+
+	if !ok_command {
+		fmt.Println(result)
+	}
 
 	c.PromptLoop(ctx)
 
