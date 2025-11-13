@@ -1,5 +1,7 @@
 package files
 
+import "fmt"
+
 type FileSystem struct {
 	files map[string]string
 }
@@ -13,9 +15,13 @@ func NewFileSystem() *FileSystem {
 	}
 }
 
-func (fs *FileSystem) ListFiles() string {
-	// See the things with permissions
-	return "to-do"
+func (fs *FileSystem) ListFiles() (string, bool) {
+	// See the things with permissions and list of files to see
+	fmt.Println("Lista de archivos:")
+	for file := range fs.files {
+		fmt.Println(file)
+	}
+	return "", true
 }
 
 func (fs *FileSystem) ReadFile(name string) (string, bool) {

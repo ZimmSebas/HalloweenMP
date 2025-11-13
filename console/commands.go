@@ -103,13 +103,9 @@ func (lp *ListPersonCommand) Name() string { return "listar" }
 func (lp *ListPersonCommand) Length() int  { return 0 }
 
 func (lp *ListPersonCommand) Execute(ctx *app.Context, args []string) (string, bool) {
-	users := ctx.UserSystem.Users
-
-	fmt.Println("Lista de usuarios:")
-	for user := range users {
-		fmt.Println(user)
-	}
-	return "", true
+	us := ctx.UserSystem
+	result, ok := us.ListUsers()
+	return result, ok
 }
 
 type CheckCommand struct{}
@@ -129,7 +125,9 @@ func (f *ListFilesCommand) Name() string { return "archivos" }
 func (f *ListFilesCommand) Length() int  { return 0 }
 
 func (f *ListFilesCommand) Execute(ctx *app.Context, args []string) (string, bool) {
-	return "", true
+	fs := ctx.FileSystem
+	result, ok := fs.ListFiles()
+	return result, ok
 }
 
 type OpenCommand struct{}
@@ -138,5 +136,7 @@ func (o *OpenCommand) Name() string { return "abrir" }
 func (o *OpenCommand) Length() int  { return 1 }
 
 func (o *OpenCommand) Execute(ctx *app.Context, args []string) (string, bool) {
-	return "", true
+	fs := ctx.FileSystem
+	result, ok := fs.ReadFile(args[0])
+	return result, ok
 }

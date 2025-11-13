@@ -1,5 +1,7 @@
 package user
 
+import "fmt"
+
 type User struct {
 	Username    string
 	Password    string
@@ -8,12 +10,12 @@ type User struct {
 }
 
 type UserSystem struct {
-	Users map[string]User
+	users map[string]User
 }
 
 func NewUserSystem() *UserSystem {
 	return &UserSystem{
-		Users: map[string]User{
+		users: map[string]User{
 			"guest":      {Username: "guest", Password: "", Permissions: &GuestPerm{}, Description: ""},
 			"cientifica": {Username: "ines.vatela", Password: "", Permissions: &GuestPerm{}, Description: ""},
 			"medium":     {Username: "medium", Password: "", Permissions: &GuestPerm{}, Description: ""},
@@ -28,7 +30,7 @@ func NewUserSystem() *UserSystem {
 
 func (us *UserSystem) LoginAccess(username string, password string) (User, bool) {
 
-	user, ok := us.Users[username]
+	user, ok := us.users[username]
 
 	if ok {
 		return user, user.Password == password
@@ -38,9 +40,17 @@ func (us *UserSystem) LoginAccess(username string, password string) (User, bool)
 	return *guest_user, false
 }
 
+func (us *UserSystem) ListUsers() (string, bool) {
+	fmt.Println("Lista de usuarios:")
+	for user := range us.users {
+		fmt.Println(user)
+	}
+	return "", true
+}
+
 func (us *UserSystem) GetDescription(username string) (string, bool) {
 
-	user, ok := us.Users[username]
+	user, ok := us.users[username]
 
 	if ok {
 		return user.Description, true
