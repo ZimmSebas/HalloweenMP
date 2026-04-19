@@ -16,8 +16,18 @@ type UserSystem struct {
 func NewUserSystem() *UserSystem {
 	return &UserSystem{
 		users: map[string]User{
-			"guest":      {Username: "guest", Password: "", Permissions: &GuestPerm{}, Description: ""},
-			"cientifica": {Username: "ines.vatela", Password: "", Permissions: &GuestPerm{}, Description: ""},
+			"guest": {
+				Username:    "guest",
+				Password:    "",
+				Permissions: &GuestPerm{},
+				Description: "Usuario invitado. \nSin permisos ni archivos.",
+			},
+			"ivatela": {
+				Username:    "ines.vatela",
+				Password:    "",
+				Permissions: &GuestPerm{},
+				Description: "Ines Vatela. PhD en Bioquímica aplicada a ecología. \n Coordinadora e investigadora del equipo de investigación ecológica. \n Nivel de seguridad: 2",
+			},
 			"medium":     {Username: "medium", Password: "", Permissions: &GuestPerm{}, Description: ""},
 			"secretario": {Username: "secretario", Password: "", Permissions: &GuestPerm{}, Description: ""},
 			"cto":        {Username: "cto", Password: "", Permissions: &GuestPerm{}, Description: ""},

@@ -33,22 +33,29 @@ func (c *Console) RegisterDefaultCommands() {
 	c.Register(&OpenCommand{})
 }
 
+// Desbloqueo de seguridad
+// Revisar las cámaras de seguridad
+
 func (c *Console) Execute(raw_command string, ctx *app.Context) (string, bool) {
 	command_array := strings.Fields(raw_command)
 
 	var result string
 	var ok_command bool
 
-	cmdName := command_array[0]
-
-	if cmd, ok := c.commands[cmdName]; ok {
-		if len(command_array)-1 != cmd.Length() {
-			result, ok_command = "Error de comando, se esperaban más argumentos. Ver *ayuda* para mas información.", false
-		} else {
-			result, ok_command = cmd.Execute(ctx, command_array[1:])
-		}
+	if len(command_array) == 0 {
+		result, ok_command = "Error de comando, se esperaban más argumentos. Ver *ayuda* para mas información.", false
 	} else {
-		result, ok_command = "Comando no reconocido", false
+		cmdName := command_array[0]
+
+		if cmd, ok := c.commands[cmdName]; ok {
+			if len(command_array)-1 != cmd.Length() {
+				result, ok_command = "Error de comando, se esperaban más argumentos. Ver *ayuda* para mas información.", false
+			} else {
+				result, ok_command = cmd.Execute(ctx, command_array[1:])
+			}
+		} else {
+			result, ok_command = "Comando no reconocido", false
+		}
 	}
 
 	return result, ok_command

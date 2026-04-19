@@ -27,5 +27,9 @@ func (fs *FileSystem) ListFiles() (string, bool) {
 func (fs *FileSystem) ReadFile(name string) (string, bool) {
 	content, ok := fs.files[name]
 
+	if !ok {
+		content = "Archivo no encontrado."
+	}
+
 	return content, ok
 }
