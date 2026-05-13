@@ -2,7 +2,6 @@ package ascii
 
 import (
 	"fmt"
-	"time"
 )
 
 func Oracle() {
@@ -31,10 +30,6 @@ func You_shall_not_pass() {
 }
 
 func Scary_face_1() {
-
-	time.Sleep(2 * time.Second)
-	fmt.Println("Los veo.")
-	time.Sleep(5 * time.Second)
 
 	fmt.Println("")
 	fmt.Println("⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣤⣤⣤⣤⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀")

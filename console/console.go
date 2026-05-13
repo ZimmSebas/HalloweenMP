@@ -33,8 +33,8 @@ func (c *Console) RegisterDefaultCommands() {
 	c.Register(&OpenCommand{})
 }
 
-// Desbloqueo de seguridad
-// Revisar las cámaras de seguridad
+// To-do Desbloqueo de seguridad
+// To-do Revisar las cámaras de seguridad
 
 func (c *Console) Execute(raw_command string, ctx *app.Context) (string, bool) {
 	command_array := strings.Fields(raw_command)
@@ -43,18 +43,18 @@ func (c *Console) Execute(raw_command string, ctx *app.Context) (string, bool) {
 	var ok_command bool
 
 	if len(command_array) == 0 {
-		result, ok_command = "Error de comando, se esperaban más argumentos. Ver *ayuda* para mas información.", false
+		result, ok_command = "Error de comando, se esperaban más argumentos. Escribir *ayuda* para más información.", false
 	} else {
 		cmdName := command_array[0]
 
 		if cmd, ok := c.commands[cmdName]; ok {
 			if len(command_array)-1 != cmd.Length() {
-				result, ok_command = "Error de comando, se esperaban más argumentos. Ver *ayuda* para mas información.", false
+				result, ok_command = "Error de comando, se esperaban más argumentos. Escribir *ayuda* para más información.", false
 			} else {
 				result, ok_command = cmd.Execute(ctx, command_array[1:])
 			}
 		} else {
-			result, ok_command = "Comando no reconocido", false
+			result, ok_command = "Comando no reconocido. Escribir *ayuda* para más información", false
 		}
 	}
 
@@ -91,3 +91,10 @@ func (c *Console) PromptLoop(ctx *app.Context) {
 	c.PromptLoop(ctx)
 
 }
+
+// func (c *Console) PrintColor (ctx *app.Context, text string, color string) {
+// 	switch color {
+// 		case "red":
+// 	}
+//
+// }

@@ -20,9 +20,9 @@ func NewUserSystem() *UserSystem {
 				Username:    "guest",
 				Password:    "",
 				Permissions: &GuestPerm{},
-				Description: "Usuario invitado. \nSin permisos ni archivos.",
+				Description: "Usuario invitado. \nSin permisos ni archivos.\n",
 			},
-			"ivatela": {
+			"ines.vatela": {
 				Username:    "ines.vatela",
 				Password:    "",
 				Permissions: &GuestPerm{},
@@ -33,7 +33,7 @@ func NewUserSystem() *UserSystem {
 			"cto":        {Username: "cto", Password: "", Permissions: &GuestPerm{}, Description: ""},
 			"jefeseg":    {Username: "jefeseg", Password: "", Permissions: &GuestPerm{}, Description: ""},
 			"zordon":     {Username: "manuel.zordon", Password: "", Permissions: &GuestPerm{}, Description: ""},
-			"gandalf":    {Username: "gandalf", Password: "aguantesam", Permissions: &AdminPerm{}, Description: ""},
+			"gandalf":    {Username: "gandalf", Password: "aguantesam", Permissions: &AdminPerm{}, Description: "Usuario administrador. Solo disponible para arreglos en el sistema."},
 		},
 	}
 }
@@ -52,9 +52,14 @@ func (us *UserSystem) LoginAccess(username string, password string) (User, bool)
 
 func (us *UserSystem) ListUsers() (string, bool) {
 	fmt.Println("Lista de usuarios:")
+	fmt.Println("")
+
 	for user := range us.users {
-		fmt.Println(user)
+		fmt.Println("\t", user)
 	}
+
+	fmt.Println("")
+
 	return "", true
 }
 
