@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"halloween/app"
 	"halloween/ascii"
+	"math/rand"
 	"os"
 	"strings"
 )
@@ -62,6 +63,22 @@ func (c *Console) Execute(raw_command string, ctx *app.Context) (string, bool) {
 
 }
 
+func glitchLine(s string, intensity float64) string {
+	runes := []rune(s)
+	for i := range runes {
+		if rand.Float64() < intensity {
+			runes[i] = rune(33 + rand.Intn(94)) // random printable char
+		}
+	}
+	return string(runes)
+}
+
+func GlitchPrintf(intensity float64, format string, a ...interface{}) {
+	text := fmt.Sprintf(format, a...)
+	glitched := glitchLine(text, intensity)
+	fmt.Print(glitched)
+}
+
 func (c *Console) Init(ctx *app.Context) {
 	c.Execute("clear", ctx)
 
@@ -78,7 +95,7 @@ func (c *Console) Init(ctx *app.Context) {
 func (c *Console) PromptLoop(ctx *app.Context) {
 	reader := bufio.NewReader(os.Stdin)
 
-	fmt.Printf("> ")
+	fmt.Printf(">> ")
 
 	raw_input, _ := reader.ReadString('\n')
 
