@@ -16,24 +16,14 @@ type UserSystem struct {
 func NewUserSystem() *UserSystem {
 	return &UserSystem{
 		users: map[string]User{
-			"guest": {
-				Username:    "guest",
-				Password:    "",
-				Permissions: &GuestPerm{},
-				Description: "Usuario invitado. \nSin permisos ni archivos.\n",
-			},
-			"ines.vatela": {
-				Username:    "ines.vatela",
-				Password:    "",
-				Permissions: &GuestPerm{},
-				Description: "Ines Vatela. PhD en Bioquímica aplicada a ecología. \n Coordinadora e investigadora del equipo de investigación ecológica. \n Nivel de seguridad: 2",
-			},
-			"medium":     {Username: "medium", Password: "", Permissions: &GuestPerm{}, Description: ""},
-			"secretario": {Username: "secretario", Password: "", Permissions: &GuestPerm{}, Description: ""},
-			"cto":        {Username: "cto", Password: "", Permissions: &GuestPerm{}, Description: ""},
-			"jefeseg":    {Username: "jefeseg", Password: "", Permissions: &GuestPerm{}, Description: ""},
-			"zordon":     {Username: "manuel.zordon", Password: "", Permissions: &GuestPerm{}, Description: ""},
-			"gandalf":    {Username: "gandalf", Password: "aguantesam", Permissions: &AdminPerm{}, Description: "Usuario administrador. Solo disponible para arreglos en el sistema."},
+			"invitado":    *Guest(),
+			"ines.vatela": *InesVatela(),
+			"medium":      {Password: "", Permissions: &StaticPerm{}, Description: ""},
+			"secretario":  {Password: "", Permissions: &StaticPerm{}, Description: ""},
+			"cto":         {Password: "", Permissions: &StaticPerm{}, Description: ""},
+			"jefeseg":     {Password: "", Permissions: &StaticPerm{}, Description: ""},
+			"zordon":      {Password: "", Permissions: &StaticPerm{}, Description: ""},
+			"gandalf":     {Password: "aguantesam", Permissions: &StaticPerm{}, Description: "Usuario administrador. Solo disponible para arreglos en el sistema."},
 		},
 	}
 }
@@ -76,9 +66,35 @@ func (us *UserSystem) GetDescription(username string) (string, bool) {
 
 func Guest() *User {
 	return &User{
-		Username:    "guest",
-		Password:    "",
-		Permissions: &GuestPerm{},
+		Username: "invitado",
+		Password: "",
+		Permissions: &StaticPerm{
+			perms: PermissionSet{
+				AllowedCommands: map[string]bool{
+					"help":  true,
+					"login": true,
+				},
+				AllowedFiles: map[string]bool{},
+			},
+		},
+		Description: "Usuario invitado. \nSin permisos ni archivos.\n",
+	}
+}
+
+func InesVatela() *User {
+	return &User{
+		Username: "ines.vatela",
+		Password: "",
+		Permissions: &StaticPerm{
+			perms: PermissionSet{
+				AllowedCommands: map[string]bool{
+					"help":  true,
+					"login": true,
+				},
+				AllowedFiles: map[string]bool{},
+			},
+		},
+		Description: "Ines Vatela. PhD en Bioquímica aplicada a ecología. \n Coordinadora e investigadora del equipo de investigación ecológica. \n Nivel de seguridad: 2",
 	}
 }
 
@@ -87,28 +103,19 @@ type PermStrategy interface {
 	CanSeeCommand(command_name string) bool
 }
 
-type GuestPerm struct{}
-
-func (g *GuestPerm) CanAccessFile(name string) bool {
-
-	// See how in hell to make work permissions.
-
-	return false
+type PermissionSet struct {
+	AllowedFiles    map[string]bool
+	AllowedCommands map[string]bool
 }
 
-func (g *GuestPerm) CanSeeCommand(name string) bool {
-
-	// See how in hell to make work permissions.
-
-	return false
+type StaticPerm struct {
+	perms PermissionSet
 }
 
-type AdminPerm struct{}
-
-func (a *AdminPerm) CanAccessFile(name string) bool {
-	return true
+func (p *StaticPerm) CanAccessFile(name string) bool {
+	return p.perms.AllowedFiles[name]
 }
 
-func (a *AdminPerm) CanSeeCommand(name string) bool {
-	return true
+func (p *StaticPerm) CanSeeCommand(name string) bool {
+	return p.perms.AllowedFiles[name]
 }

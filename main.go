@@ -6,9 +6,9 @@ import (
 	"halloween/user"
 )
 
-// func start(ctx *app.Context) {
-// 	ctx.SceneManager.StartScene()
-// }
+func start(ctx *app.Context) {
+	ctx.SceneManager.StartScene()
+}
 
 func main() {
 
@@ -19,7 +19,7 @@ func main() {
 	c := console.NewConsole()
 	c.RegisterDefaultCommands()
 
-	//start(ctx)
+	start(ctx)
 	c.Init(ctx)
 
 }

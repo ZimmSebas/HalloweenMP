@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"halloween/app"
 	"halloween/ascii"
-	"math/rand"
 	"os"
 	"strings"
 )
@@ -36,6 +35,7 @@ func (c *Console) RegisterDefaultCommands() {
 
 // To-do Desbloqueo de seguridad
 // To-do Revisar las cámaras de seguridad
+// To-do insert code
 
 func (c *Console) Execute(raw_command string, ctx *app.Context) (string, bool) {
 	command_array := strings.Fields(raw_command)
@@ -48,7 +48,9 @@ func (c *Console) Execute(raw_command string, ctx *app.Context) (string, bool) {
 	} else {
 		cmdName := command_array[0]
 
-		if cmd, ok := c.commands[cmdName]; ok {
+		if !ctx.User.Permissions.CanSeeCommand(cmdName) {
+			result, ok_command = "Comando no reconocido. Escribir *ayuda* para más información", false
+		} else if cmd, ok := c.commands[cmdName]; ok {
 			if len(command_array)-1 != cmd.Length() {
 				result, ok_command = "Error de comando, se esperaban más argumentos. Escribir *ayuda* para más información.", false
 			} else {
@@ -61,22 +63,6 @@ func (c *Console) Execute(raw_command string, ctx *app.Context) (string, bool) {
 
 	return result, ok_command
 
-}
-
-func glitchLine(s string, intensity float64) string {
-	runes := []rune(s)
-	for i := range runes {
-		if rand.Float64() < intensity {
-			runes[i] = rune(33 + rand.Intn(94)) // random printable char
-		}
-	}
-	return string(runes)
-}
-
-func GlitchPrintf(intensity float64, format string, a ...interface{}) {
-	text := fmt.Sprintf(format, a...)
-	glitched := glitchLine(text, intensity)
-	fmt.Print(glitched)
 }
 
 func (c *Console) Init(ctx *app.Context) {
